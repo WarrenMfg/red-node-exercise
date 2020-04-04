@@ -90,6 +90,45 @@ describe('server receives and responds to requests', () => {
   });
 
 
-  // test()
+  test('it should receive and respond to a DELETE request', async () => {
+    // GET records first to compare
+    const beforeDELETE = await axios.get('http://localhost:50000/api/data/many/rank/asc')
+      .then(res => res.data)
+      .catch(err => console.log(err));
+    
+    const deletedRecord = beforeDELETE[0];
+
+    const afterDELETE = await axios.delete('http://localhost:50000/api/data/one/rank/asc', { data: deletedRecord })
+      .then(res => res.data)
+      .catch(err => console.log(err));
+
+    // compare to ensure deletedRecord was deleted
+    expect(beforeDELETE.length - 1).toBe(afterDELETE.length);
+    expect(afterDELETE).not.toContain(deletedRecord);
+  });
+
+
+  test('it should update ranks after a DELETE request', async () => {
+    // GET records first to compare
+    const beforeDELETE = await axios.get('http://localhost:50000/api/data/many/rank/asc')
+      .then(res => res.data)
+      .catch(err => console.log(err));
+    
+    const deletedRecord = beforeDELETE[0];
+
+    const afterDELETE = await axios.delete('http://localhost:50000/api/data/one/rank/asc', { data: deletedRecord })
+      .then(res => res.data)
+      .catch(err => console.log(err));
+  });
+
+
+  test('it should update ranks after a valid POST request', async () => {
+
+  });
+
+
+  test('it should not update ranks after an invalid POST request', async () => {
+    
+  });
 });
 
