@@ -36,11 +36,18 @@ function GET(sortBy, order) {
  * POST function. It should send a new record
  * @param {object} record
  */
-function POST(record) {
-  const blob = new Blob([JSON.stringify(record)], {
-    type: "application/json"
+function POST(record, sortBy, order) {
+  // const blob = new Blob([JSON.stringify(record)], {
+  //   type: "application/json"
+  // });
+  // return Promise.resolve(new Response(blob, { status: 200 }));
+  return fetch(`/api/data/one/${sortBy}/${order}`, { 
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(record)
   });
-  return Promise.resolve(new Response(blob, { status: 200 }));
 }
 
 /**

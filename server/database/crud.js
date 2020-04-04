@@ -6,13 +6,13 @@ const getMany = model => (req, res) => {
       const { sortBy, order } = req.params;
       if (sortBy === 'name') { // sort by string
         if (order === 'asc') {
-          const sortedData = utils.sortByFirstNameAsc(data);
-          // const sortedData = utils.sortByLastNameAsc(data); // alternate
+          // const sortedData = utils.sortByFirstNameAsc(data); // alternate
+          const sortedData = utils.sortByLastNameAsc(data);
           res.send(sortedData);
           return;
         } else if (order === 'desc') {
-          const sortedData = utils.sortByFirstNameDesc(data);
-          // const sortedData = utils.sortByLastNameDesc(data); // alternate
+          // const sortedData = utils.sortByFirstNameDesc(data); // alternate
+          const sortedData = utils.sortByLastNameDesc(data); 
           res.send(sortedData);
           return;
         }
@@ -32,10 +32,18 @@ const getMany = model => (req, res) => {
     .catch(err => console.log(err));
 };
 
-const createOne = model => (req, res) => {
-  model.create(req.body)
-    .then(doc => res.send(doc))
-    .catch(err => console.log(err));
+const createOne = model => async (req, res) => {
+  const count = await model.countDocuments({});
+  await model.create({ ...req.body, rank: ++count })
+    .catch(() => res.sendStatus(400));
+  this.getMany()();
+
+    // .then(count => {
+    //   model.create({ ...req.body, rank: ++count })
+    //     .then(doc => res.send(doc))
+    //     .catch(err => console.log(err));
+    // })
+    // .catch(err => console.log(err));
 };
 
 module.exports = model => ({
