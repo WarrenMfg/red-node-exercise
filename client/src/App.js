@@ -31,7 +31,7 @@ const App = () => {
     const handleAddRandomRecord = React.useCallback(() => {
         const record = {
             points: faker.random.number(999999),
-            name: `${faker.name.firstName} ${faker.name.lastName}`,
+            name: `${faker.name.firstName()} ${faker.name.lastName()}`,
             age: faker.random.number(100)
         };
         api.POST(record)

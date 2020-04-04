@@ -29,10 +29,7 @@ function GET(sortBy, order) {
   //     type: "application/json"
   // });
   // return Promise.resolve(new Response(blob, { status: 200 }));
-  return fetch(`/api/data/many/${sortBy}/${order}`)
-    // .then(response => response.json())
-    // .then(data => console.log(data))
-    // .catch(err => console.log(new Error(err)));
+  return fetch(`/api/data/many/${sortBy}/${order}`);
 }
 
 /**
