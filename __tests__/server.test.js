@@ -69,6 +69,27 @@ describe('server receives and responds to requests', () => {
   });
 
 
+  test('it should receive and respond to an invalid POST request', async () => {
+    // GET records first to compare
+    const beforePOST = await axios.get('http://localhost:50000/api/data/many/rank/asc')
+      .then(res => res.data)
+      .catch(err => console.log(err));
+
+    // make invalid POST request
+    const invalidRecord = {
+      points: "A lot of points",
+      name: undefined,
+      age: faker.random.number(100) + 1000
+    };
+    const afterPOST = await axios.post('http://localhost:50000/api/data/one/rank/asc', invalidRecord)
+      .then(res => res)
+      .catch(err => err);
+
+    // ensure it was not POSTED
+    expect(afterPOST.response.status).toBe(400);
+  });
+
+
   // test()
 });
 
