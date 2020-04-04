@@ -34,18 +34,50 @@ const getMany = model => (req, res) => {
 
 const createOne = model => async (req, res) => {
   let count = await model.countDocuments({});
-  await model.create({ ...req.body, rank: ++count })
+
+  await model.updateMany({ points: { $lte: req.body.points } }, { $inc: { rank: 1 } })
+    .catch(() => res.sendStatus(400));
+  await model.find({ points: { $lte: req.body.points } })
+    .then(docs => {
+      if (docs.length) {
+        let rank = docs[0].rank;
+        docs.forEach(doc => {
+          if (doc.rank < rank) {
+            rank = doc.rank;
+          }
+        });
+        req.body.rank = rank - 1;
+      } else {
+        req.body.rank = ++count;
+      }
+    });
+  
+  model.create(req.body)
     .then(() => getMany(model)(req, res))
     .catch(() => res.sendStatus(400));
 };
 
 const deleteOne = model => async (req, res) => {
-  await model.findOneAndDelete({ rank: req.body.rank })
+  await model.findOneAndDelete(req.body)
     .catch(() => res.sendStatus(400));
- 
-  model.updateMany({ rank: { $gte: req.body.rank } }, { $inc: { rank: -1 } })
-    .then(() => getMany(model)(req, res))
-    .catch(() => res.sendStatus(400))
+
+  let tie = [];
+  await model.findOne({ rank: req.body.rank })
+    .then(doc => {
+      if (doc) {
+        tie = doc;
+      }
+    })
+    .catch(() => res.sendStatus(400));
+
+  if (!tie.length) {
+    model.updateMany({ rank: { $gte: req.body.rank } }, { $inc: { rank: -1 } })
+      .then(() => getMany(model)(req, res))
+      .catch(() => res.sendStatus(400))
+  } else {
+    getMany(model)(req, res);
+  }
+
 };
 
 const seedOne = model => (req, res) => {
