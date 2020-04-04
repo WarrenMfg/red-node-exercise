@@ -5,15 +5,16 @@ const Record = require('./model');
 
 const posts = [];
 const seed = (post) => {
-  return axios.post('http://localhost:50000/api/data/one', post)
+  return axios.post('http://localhost:50000/api/data/seed', post)
     .catch(err => console.log(err));
 };
 
-let counter = 1;
-data.forEach(record => {
+data.sort((a, b) => b.points - a.points);
+
+data.forEach((record, i) => {
+  record.rank = i + 1;
   posts.push(seed(new Record(record)));
-  console.log(counter, 'posts added');
-  counter++;
+  console.log(i + 1, 'posts added');
 });
 
 Promise.all(posts)

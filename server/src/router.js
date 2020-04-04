@@ -6,6 +6,10 @@ dataRouter.route('/many/:sortBy/:order')
   .get(controller.getMany);
 
 dataRouter.route('/one/:sortBy/:order')
-  .post(controller.createOne);
+  .post(controller.createOne)
+  .delete(controller.deleteOne);
+
+dataRouter.route('/seed')
+  .post(controller.seedOne)
 
 module.exports = dataRouter;

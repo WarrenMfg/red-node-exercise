@@ -24,11 +24,10 @@ class App extends React.Component {
 
   componentDidMount() {
     const { sortBy, order } = this.state;
-
-    // api.GET(sortBy, order)
     this.GET(sortBy, order);
   }
 
+  // API
   GET(sortBy, order) {
     fetch(`/api/data/many/${sortBy}/${order}`)
       .then(handleErrors)
@@ -37,8 +36,35 @@ class App extends React.Component {
       .catch(error => this.setState({ error }));
   }
 
+  POST(record, sortBy, order) {
+    fetch(`/api/data/one/${sortBy}/${order}`, { 
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(record)
+    })
+      .then(handleErrors)
+      .then(res => res.json())
+      .then(records => this.setState({ records, lastFetchTS: Date.now() }))
+      .catch(error => this.setState({ error }));
+  }
+
+  DELETE(record, sortBy, order) {
+    fetch(`/api/data/one/${sortBy}/${order}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(record)
+    })
+      .then(handleErrors)
+      .then(res => res.json())
+      .then(records => this.setState({ records, lastFetchTS: Date.now() }))
+      .catch(error => this.setState({ error }));
+  }
+
   handleKeyClick(k) {
-    console.log(k);
     const { sortBy, order } = this.state;
     let i = 0;
 
@@ -55,31 +81,32 @@ class App extends React.Component {
   handleAddRandomRecord() {
     const { sortBy, order } = this.state;
     const record = {
-      // rank: ascertained from data.js that rank is not based on points
       points: faker.random.number(999999),
       name: `${faker.name.firstName()} ${faker.name.lastName()}`,
       age: faker.random.number(100)
     };
 
-    fetch(`/api/data/one/${sortBy}/${order}`, { 
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(record)
-    })
-      .then(handleErrors)
-      .then(res => res.json())
-      .then(records => this.setState({ records, lastFetchTS: Date.now() }))
-      .catch(error => this.setState({ error }));
+    this.POST(record, sortBy, order);
   }
 
   handleAddBadRecord() {
-
+    const record = {
+      points: "A lot of points",
+      name: undefined,
+      age: faker.random.number(100) + 1000
+    };
+      api.POST(record)
+        .then(handleErrors)
+        .then(() => console.log("[APP]", "record created", record))
+        .then(() => setRecords(prevRecords => [...prevRecords, record]))
+        .then(refresh)
+        .catch(setError);
   }
 
   handleDeleteRecord(record) {
+    const { sortBy, order } = this.state;
 
+    this.DELETE(record, sortBy, order);
   }
 
   render() {
@@ -133,19 +160,19 @@ const App = () => {
   //   [sortBy, setSortBy, setOrder]
   // );
 
-  const handleAddRandomRecord = React.useCallback(() => {
-    const record = {
-      // rank: ascertained from data.js that rank is not based on points
-      points: faker.random.number(999999),
-      name: `${faker.name.firstName()} ${faker.name.lastName()}`,
-      age: faker.random.number(100)
-    };
-    api.POST(record)
-      .then(handleErrors)
-      .then(() => console.log("[APP]", "record created", record))
-      .then(refresh)
-      .catch(setError);
-  }, [refresh]);
+  // const handleAddRandomRecord = React.useCallback(() => {
+  //   const record = {
+  //     // rank: ascertained from data.js that rank is not based on points
+  //     points: faker.random.number(999999),
+  //     name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+  //     age: faker.random.number(100)
+  //   };
+  //   api.POST(record)
+  //     .then(handleErrors)
+  //     .then(() => console.log("[APP]", "record created", record))
+  //     .then(refresh)
+  //     .catch(setError);
+  // }, [refresh]);
 
   const handleAddBadRecord = React.useCallback(() => {
     const record = {
@@ -161,29 +188,29 @@ const App = () => {
       .catch(setError);
   }, [refresh]);
 
-  const handleDeleteRecord = React.useCallback(
-    record => {
-      api.DELETE(record)
-        .then(handleErrors)
-        .then(() => console.log("[APP]", "record deleted", record))
-        .then(refresh)
-        .catch(setError);
-    },
-    [refresh]
-  );
+  // const handleDeleteRecord = React.useCallback(
+  //   record => {
+  //     api.DELETE(record)
+  //       .then(handleErrors)
+  //       .then(() => console.log("[APP]", "record deleted", record))
+  //       .then(refresh)
+  //       .catch(setError);
+  //   },
+  //   [refresh]
+  // );
 
-  React.useEffect(() => {
-    setRecords();
-    setError();
+  // React.useEffect(() => {
+  //   setRecords();
+  //   setError();
 
-    api.GET(sortBy, order)
-      .then(handleErrors)
-      .then(r => r.json())
-      .then(wait(1000))
-      .then(setRecords)
-      .then(() => setLastFetchTS(Date.now()))
-      .catch(setError);
-  }, [sortBy, order]); // [sortBy, order, dummy]
+  //   api.GET(sortBy, order)
+  //     .then(handleErrors)
+  //     .then(r => r.json())
+  //     .then(wait(1000))
+  //     .then(setRecords)
+  //     .then(() => setLastFetchTS(Date.now()))
+  //     .catch(setError);
+  // }, [sortBy, order]); // [sortBy, order, dummy]
 
 
 };

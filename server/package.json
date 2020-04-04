@@ -13,7 +13,8 @@
 	"scripts": {
 		"document": "jsdoc2md ./**/*.js > README.md",
 		"start": "node ./src/index.js",
-		"startdev": "nodemon ./src/index.js"
+		"startdev": "nodemon ./src/index.js",
+		"seed": "node database/seeder.js"
 	},
 	"dependencies": {
 		"express": "^4.17.1",

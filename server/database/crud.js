@@ -29,17 +29,34 @@ const getMany = model => (req, res) => {
         }
       }
     })
-    .catch(err => console.log(err));
+    .catch(() => res.sendStatus(400));
 };
 
 const createOne = model => async (req, res) => {
   let count = await model.countDocuments({});
   await model.create({ ...req.body, rank: ++count })
+    .then(() => getMany(model)(req, res))
     .catch(() => res.sendStatus(400));
-  getMany(model)(req, res);
+};
+
+const deleteOne = model => async (req, res) => {
+  await model.findOneAndDelete({ rank: req.body.rank })
+    .catch(() => res.sendStatus(400));
+ 
+  model.updateMany({ rank: { $gte: req.body.rank } }, { $inc: { rank: -1 } })
+    .then(() => getMany(model)(req, res))
+    .catch(() => res.sendStatus(400))
+};
+
+const seedOne = model => (req, res) => {
+  model.create(req.body)
+    .then(() => res.sendStatus(200))
+    .catch(() => res.sendStatus(400));
 };
 
 module.exports = model => ({
   getMany: getMany(model),
-  createOne: createOne(model)
+  createOne: createOne(model),
+  deleteOne: deleteOne(model),
+  seedOne: seedOne(model)
 });
