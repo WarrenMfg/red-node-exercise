@@ -25,29 +25,21 @@ const ORDERS = ["asc", "desc"];
  * @param {string} order
  */
 function GET(sortBy, order) {
-  // const blob = new Blob([JSON.stringify(DEMO_RECORDS)], {
-  //     type: "application/json"
-  // });
-  // return Promise.resolve(new Response(blob, { status: 200 }));
-  return fetch(`/api/data/many/${sortBy}/${order}`);
+    const blob = new Blob([JSON.stringify(DEMO_RECORDS)], {
+        type: "application/json"
+    });
+    return Promise.resolve(new Response(blob, { status: 200 }));
 }
 
 /**
  * POST function. It should send a new record
  * @param {object} record
  */
-function POST(record, sortBy, order) {
-  // const blob = new Blob([JSON.stringify(record)], {
-  //   type: "application/json"
-  // });
-  // return Promise.resolve(new Response(blob, { status: 200 }));
-  return fetch(`/api/data/one/${sortBy}/${order}`, { 
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(record)
-  });
+function POST(record) {
+    const blob = new Blob([JSON.stringify(record)], {
+        type: "application/json"
+    });
+    return Promise.resolve(new Response(blob, { status: 200 }));
 }
 
 /**
@@ -55,18 +47,18 @@ function POST(record, sortBy, order) {
  * @param {object} record
  */
 function DELETE(record) {
-  const blob = new Blob([JSON.stringify(record)], {
-    type: "application/json"
-  });
-  return Promise.resolve(new Response(blob, { status: 200 }));
+    const blob = new Blob([JSON.stringify(record)], {
+        type: "application/json"
+    });
+    return Promise.resolve(new Response(blob, { status: 200 }));
 }
 
 const api = {
-  GET,
-  POST,
-  DELETE,
-  DATA_PROPS,
-  ORDERS
+    GET,
+    POST,
+    DELETE,
+    DATA_PROPS,
+    ORDERS
 };
 
 export default api;

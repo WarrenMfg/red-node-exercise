@@ -12,6 +12,7 @@ const sortByFirstNameAsc = (data) => {
   });
 }; 
 
+
 const sortByFirstNameDesc = (data) => {
   return data.sort((a, b) => {
     const nameA = a.name.toLowerCase();
@@ -25,6 +26,7 @@ const sortByFirstNameDesc = (data) => {
     }
   });
 };
+
 
 const sortByLastNameAsc = (data) => {
   return data.sort((a, b) => {
@@ -51,6 +53,7 @@ const sortByLastNameAsc = (data) => {
   });
 };
 
+
 const sortByLastNameDesc = (data) => {
   return data.sort((a, b) => {
     let nameA = a.name.toLowerCase().split(' ').reverse();
@@ -76,9 +79,28 @@ const sortByLastNameDesc = (data) => {
   });
 };
 
+
+const isValidRecord = (record) => {
+  if (!(typeof record.points === 'number' && record.points >= 0 && record.points <= 999999)) {
+    return false;
+  }
+
+  if (typeof record.name !== 'string') {
+    return false;
+  }
+
+  if (!(typeof record.age === 'number' && record.age >= 0 && record.age <= 100)) {
+    return false;
+  }
+
+  return true;
+};
+
+
 module.exports = {
   sortByFirstNameAsc,
   sortByFirstNameDesc,
   sortByLastNameAsc,
-  sortByLastNameDesc
+  sortByLastNameDesc,
+  isValidRecord
 };

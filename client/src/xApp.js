@@ -9,9 +9,9 @@ const App = () => {
     const [sortBy, setSortBy] = React.useState(api.DATA_PROPS[0]);
     const [order, setOrder] = React.useState(api.ORDERS[0]);
     const [error, setError] = React.useState();
-    // const [dummy, setDummy] = React.useState(0);
+    const [dummy, setDummy] = React.useState(0);
     const [lastFetchTS, setLastFetchTS] = React.useState();
-    // const refresh = React.useCallback(() => setDummy(Date.now()), [setDummy]);
+    const refresh = React.useCallback(() => setDummy(Date.now()), [setDummy]);
     const [records, setRecords] = React.useState();
 
     const handleKeyClick = React.useCallback(
@@ -30,9 +30,8 @@ const App = () => {
 
     const handleAddRandomRecord = React.useCallback(() => {
         const record = {
-            // rank: ascertained from data.js that rank is not based on points
             points: faker.random.number(999999),
-            name: `${faker.name.firstName()} ${faker.name.lastName()}`,
+            name: `${faker.name.firstName} ${faker.name.lastName}`,
             age: faker.random.number(100)
         };
         api.POST(record)
@@ -51,7 +50,6 @@ const App = () => {
         api.POST(record)
             .then(handleErrors)
             .then(() => console.log("[APP]", "record created", record))
-            .then(() => setRecords(prevRecords => [...prevRecords, record]))
             .then(refresh)
             .catch(setError);
     }, [refresh]);
@@ -78,7 +76,7 @@ const App = () => {
             .then(setRecords)
             .then(() => setLastFetchTS(Date.now()))
             .catch(setError);
-    }, [sortBy, order]); // [sortBy, order, dummy]
+    }, [sortBy, order, dummy]);
 
     return (
         <div className="container">

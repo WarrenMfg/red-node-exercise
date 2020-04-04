@@ -3,6 +3,7 @@ const axios = require('axios');
 const Promise = require('bluebird');
 const Record = require('./model');
 
+
 const posts = [];
 const seed = (post) => {
   return axios.post('http://localhost:50000/api/data/seed', post)

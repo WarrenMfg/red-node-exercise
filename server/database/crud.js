@@ -1,5 +1,6 @@
 const utils = require('./utils');
 
+
 const getMany = model => (req, res) => {
   model.find({}).lean().exec()
     .then(data => {
@@ -32,7 +33,12 @@ const getMany = model => (req, res) => {
     .catch(() => res.sendStatus(400));
 };
 
+
 const createOne = model => async (req, res) => {
+  if (!utils.isValidRecord(req.body)) {
+    res.sendStatus(400);
+    return;
+  }
   let count = await model.countDocuments({});
 
   await model.updateMany({ points: { $lte: req.body.points } }, { $inc: { rank: 1 } })
@@ -57,6 +63,7 @@ const createOne = model => async (req, res) => {
     .catch(() => res.sendStatus(400));
 };
 
+
 const deleteOne = model => async (req, res) => {
   await model.findOneAndDelete(req.body)
     .catch(() => res.sendStatus(400));
@@ -80,11 +87,13 @@ const deleteOne = model => async (req, res) => {
 
 };
 
+
 const seedOne = model => (req, res) => {
   model.create(req.body)
     .then(() => res.sendStatus(200))
     .catch(() => res.sendStatus(400));
 };
+
 
 module.exports = model => ({
   getMany: getMany(model),
