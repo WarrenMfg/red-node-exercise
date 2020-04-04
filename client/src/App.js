@@ -61,7 +61,13 @@ class App extends React.Component {
       age: faker.random.number(100)
     };
 
-    api.POST(record, sortBy, order)
+    fetch(`/api/data/one/${sortBy}/${order}`, { 
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(record)
+    })
       .then(handleErrors)
       .then(res => res.json())
       .then(records => this.setState({ records, lastFetchTS: Date.now() }))

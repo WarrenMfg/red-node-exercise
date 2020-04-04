@@ -33,17 +33,10 @@ const getMany = model => (req, res) => {
 };
 
 const createOne = model => async (req, res) => {
-  const count = await model.countDocuments({});
+  let count = await model.countDocuments({});
   await model.create({ ...req.body, rank: ++count })
     .catch(() => res.sendStatus(400));
-  this.getMany()();
-
-    // .then(count => {
-    //   model.create({ ...req.body, rank: ++count })
-    //     .then(doc => res.send(doc))
-    //     .catch(err => console.log(err));
-    // })
-    // .catch(err => console.log(err));
+  getMany(model)(req, res);
 };
 
 module.exports = model => ({
