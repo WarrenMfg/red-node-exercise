@@ -105,6 +105,8 @@ describe('server receives and responds to requests', () => {
     // compare to ensure deletedRecord was deleted
     expect(beforeDELETE.length - 1).toBe(afterDELETE.length);
     expect(afterDELETE).not.toContain(deletedRecord);
+
+    // NOTE: test does not make follow-up POST request; ensure database is fully seeded
   });
 
 
@@ -114,21 +116,39 @@ describe('server receives and responds to requests', () => {
       .then(res => res.data)
       .catch(err => console.log(err));
     
+    // ensure consecutive ranks
+    beforeDELETE.forEach((record, i, arr) => {
+      expect(record.rank).toBe(i + 1);
+      // ensure points descend
+      if (i < arr.length - 1) {
+        expect(record.points).toBeGreaterThanOrEqual(arr[i + 1].points);
+      }
+    });
+    
     const deletedRecord = beforeDELETE[0];
 
     const afterDELETE = await axios.delete('http://localhost:50000/api/data/one/rank/asc', { data: deletedRecord })
       .then(res => res.data)
       .catch(err => console.log(err));
+
+    // ensure consecutive ranks
+    afterDELETE.forEach((record, i, arr) => {
+      expect(record.rank).toBe(i + 1);
+      // ensure points descend
+      if (i < arr.length - 1) {
+        expect(record.points).toBeGreaterThanOrEqual(arr[i + 1].points);
+      }
+    });
   });
 
 
-  test('it should update ranks after a valid POST request', async () => {
+  // test('it should update ranks after a valid POST request', async () => {
 
-  });
+  // });
 
 
-  test('it should not update ranks after an invalid POST request', async () => {
+  // test('it should not update ranks after an invalid POST request', async () => {
     
-  });
+  // });
 });
 
