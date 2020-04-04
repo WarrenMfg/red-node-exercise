@@ -29,6 +29,7 @@
 // console.log("Not Implemented");
 
 const express = require('express');
+const cors = require('cors'); // for tests
 const morgan = require('morgan');
 const path = require('path');
 const router = require('./router');
@@ -36,11 +37,10 @@ const router = require('./router');
 const PORT = 50000;
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 app.use('/api/data', router);
 app.use('/', express.static(path.resolve(__dirname, '../../client/public')));
 
 app.listen(process.env.PORT || PORT, () => console.log(`Listening on port ${PORT}`));
-
-module.exports = PORT;

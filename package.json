@@ -1,0 +1,24 @@
+{
+  "name": "red-node-exercise",
+  "version": "1.0.0",
+  "description": "The goal of this exercise is to create a table of sortable data by building out all of the server side functionality and making the necessary connections between the server and the client. See the [README](server/README.md) for the complete list of server \"to dos\".",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --verbose"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "@babel/preset-react": "^7.9.4",
+    "babel-jest": "^25.2.6",
+    "jest": "^25.2.7"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "express": "^4.17.1",
+    "faker": "^4.1.0"
+  }
+}
