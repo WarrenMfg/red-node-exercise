@@ -13,7 +13,8 @@ class App extends React.Component {
       sortBy: api.DATA_PROPS[0],
       order: api.ORDERS[0],
       lastFetchTS: null,
-      error: null
+      error: null,
+      httpLock: false
     };
 
     this.handleKeyClick = this.handleKeyClick.bind(this);
@@ -33,24 +34,40 @@ class App extends React.Component {
     api.GET(sortBy, order)
       .then(handleErrors)
       .then(res => res.json())
-      // .then(wait(1000))
+      .then(wait(1000))
       .then(records => this.setState({ records, lastFetchTS: Date.now(), error: null }))
       .catch(error => this.setState({ error }));
   }
 
   POST(record, sortBy, order) {
+    if (this.state.httpLock) {
+      return;
+    }
+
+    this.setState({ httpLock: true });
+
     api.POST(record, sortBy, order)
       .then(handleErrors)
       .then(res => res.json())
       .then(records => this.setState({ records, lastFetchTS: Date.now(), error: null }))
+      .then(wait(1000))
+      .then(() => this.setState({ httpLock: false }))
       .catch( () => this.setState({ error: { message: 'Bad record' } }) );
   }
 
   DELETE(record, sortBy, order) {
+    if (this.state.httpLock) {
+      return;
+    }
+
+    this.setState({ httpLock: true });
+
     api.DELETE(record, sortBy, order)
       .then(handleErrors)
       .then(res => res.json())
       .then(records => this.setState({ records, lastFetchTS: Date.now(), error: null }))
+      .then(wait(1000))
+      .then(() => this.setState({ httpLock: false }))
       .catch(error => this.setState({ error }));
   }
 
