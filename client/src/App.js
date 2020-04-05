@@ -1,6 +1,6 @@
 import React from "react";
 import Table from "./components/Table";
-import { handleErrors } from "./utils";
+import { handleErrors, wait } from "./utils";
 import api from "./api";
 import faker from "faker";
 import ErrorPrompt from "./components/Error";
@@ -33,7 +33,8 @@ class App extends React.Component {
     api.GET(sortBy, order)
       .then(handleErrors)
       .then(res => res.json())
-      .then(records => this.setState({ records, lastFetchTS: Date.now(), error: null }))
+      .then(wait(1000))
+      .then(records => this.setState({ records, sortBy, order, lastFetchTS: Date.now(), error: null }))
       .catch(error => this.setState({ error }));
   }
 
@@ -58,13 +59,14 @@ class App extends React.Component {
     const { sortBy, order } = this.state;
     let i = 0;
 
+    // if click occurs on current sortBy column, then user wants to switch between 'asc' and 'desc'
     if (k === sortBy) {
       i = order === 'asc' ? 1 : 0;
-      this.setState({ order: api.ORDERS[i] });
-    } else {
-      this.setState({ sortBy: k, order: api.ORDERS[0] });
     }
 
+    // empty records array so that 'Loading...' text displays during setTimeout
+    this.setState({ records: [] });
+    // GET all records (assuming multiple clients can add/delete records)
     this.GET(k, api.ORDERS[i]);
   }
 
@@ -109,7 +111,7 @@ class App extends React.Component {
           <ErrorPrompt error={error} />
         </header>
         <div className="mb-3">
-          {!records && !error ? "Loading ..." : `Last Fetch: ${new Date(lastFetchTS)}`}
+          {!records.length && !error ? "Loading ..." : `Last Fetch: ${new Date(lastFetchTS)}`}
         </div>
         <Table
           onKeyClick={this.handleKeyClick} 
