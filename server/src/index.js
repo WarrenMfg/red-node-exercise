@@ -34,13 +34,15 @@ const morgan = require('morgan');
 const path = require('path');
 const router = require('./router');
 
-const PORT = 50000;
+const PORT = process.env.PORT || 50000;
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
+
+// routes
 app.use('/api/data', router);
 app.use('/', express.static(path.resolve(__dirname, '../../client/public')));
 
-app.listen(process.env.PORT || PORT, () => console.log(`Listening on port ${PORT}`));
+app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
