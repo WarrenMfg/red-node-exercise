@@ -30,7 +30,7 @@ class App extends React.Component {
 
   // API
   GET(sortBy, order) {
-    fetch(`/api/data/many/${sortBy}/${order}`)
+    api.GET(sortBy, order)
       .then(handleErrors)
       .then(res => res.json())
       .then(records => this.setState({ records, lastFetchTS: Date.now(), error: null }))
@@ -38,13 +38,7 @@ class App extends React.Component {
   }
 
   POST(record, sortBy, order) {
-    fetch(`/api/data/one/${sortBy}/${order}`, { 
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(record)
-    })
+    api.POST(record, sortBy, order)
       .then(handleErrors)
       .then(res => res.json())
       .then(records => this.setState({ records, lastFetchTS: Date.now(), error: null }))
@@ -52,13 +46,7 @@ class App extends React.Component {
   }
 
   DELETE(record, sortBy, order) {
-    fetch(`/api/data/one/${sortBy}/${order}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(record)
-    })
+    api.DELETE(record, sortBy, order)
       .then(handleErrors)
       .then(res => res.json())
       .then(records => this.setState({ records, lastFetchTS: Date.now(), error: null }))
