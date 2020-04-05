@@ -71,10 +71,6 @@ describe('server receives and responds to requests', () => {
     map.forEach((val, key) => {
       expect(newRecord[key]).toBe(val);
     });
-
-    // delete newRecord (not absolutely necessary for this test)
-    const afterDELETE = await DELETE(newRecord);
-    expect(afterDELETE.length).toBe(beforePOST.length);
   });
 
 

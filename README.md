@@ -6,3 +6,36 @@ The goal of this exercise is to create a table of sortable data by building out 
 The majority of the UI has been completed except for connecting the client side API. See the [README](client/README.md) for the complete list of client "to dos".
 
 ![screenshot](screenshot.png)
+
+*************************
+
+## Link to Deployed App
+- [Link to Deployed App](http://ec2-18-219-164-137.us-east-2.compute.amazonaws.com:50000)
+
+## From Root Directory
+
+### Install NPM Packages
+- npm install
+  - should automatically run postinstall script for nested package.json files
+  - if not, cd into both client and server directories to run npm install on each, then return to root directory
+  - if node_modules directories do not display, close window and reopen
+
+### Start Server
+- npm run startdev (for nodemon)
+<br>**or**<br>
+- npm start (for node)
+
+### Seed Database
+- npm run seed
+
+### View in Browser
+- [Localhost](http://localhost:50000)
+
+### Build
+- bundle.js is already built
+- to rebuild after changes, run the following from the root directory:
+  - npm run build
+- webpack is already configured to watch for changes
+
+### Test
+- npm run test

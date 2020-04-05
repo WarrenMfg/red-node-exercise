@@ -14,7 +14,7 @@
 		"document": "jsdoc2md ./**/*.js > README.md",
 		"start": "node ./src/index.js",
 		"startdev": "nodemon ./src/index.js",
-		"seed": "node database/seeder.js"
+		"seed": "node ./database/seeder.js"
 	},
 	"dependencies": {
 		"cors": "^2.8.5",
