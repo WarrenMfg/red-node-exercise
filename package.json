@@ -4,7 +4,12 @@
   "description": "The goal of this exercise is to create a table of sortable data by building out all of the server side functionality and making the necessary connections between the server and the client. See the [README](server/README.md) for the complete list of server \"to dos\".",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose"
+    "test": "jest --verbose --coverage"
+  },
+  "jest": {
+    "setupFilesAfterEnv": [
+      "<rootDir>setupTests.js"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -14,11 +19,16 @@
     "@babel/preset-env": "^7.9.0",
     "@babel/preset-react": "^7.9.4",
     "babel-jest": "^25.2.6",
-    "jest": "^25.2.7"
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "jest": "^25.2.7",
+    "jsdom": "^16.2.2"
   },
   "dependencies": {
     "axios": "^0.19.2",
     "express": "^4.17.1",
-    "faker": "^4.1.0"
+    "faker": "^4.1.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
   }
 }

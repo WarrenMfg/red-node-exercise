@@ -1,6 +1,6 @@
 import React from "react";
 import Table from "./components/Table";
-import { handleErrors, wait } from "./utils";
+import { handleErrors } from "./utils";
 import api from "./api";
 import faker from "faker";
 import ErrorPrompt from "./components/Error";
@@ -22,6 +22,7 @@ class App extends React.Component {
     this.handleDeleteRecord = this.handleDeleteRecord.bind(this);
   }
 
+  // LIFECYCLE
   componentDidMount() {
     const { sortBy, order } = this.state;
     this.GET(sortBy, order);
