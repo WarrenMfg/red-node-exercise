@@ -52,7 +52,7 @@ class App extends React.Component {
       .then(records => this.setState({ records, lastFetchTS: Date.now(), error: null }))
       .then(wait(1000))
       .then(() => this.setState({ httpLock: false }))
-      .catch( () => this.setState({ error: { message: 'Bad record' } }) );
+      .catch( () => this.setState({ error: { message: 'Bad record' }, httpLock: false }) );
   }
 
   DELETE(record, sortBy, order) {
@@ -68,7 +68,7 @@ class App extends React.Component {
       .then(records => this.setState({ records, lastFetchTS: Date.now(), error: null }))
       .then(wait(1000))
       .then(() => this.setState({ httpLock: false }))
-      .catch(error => this.setState({ error }));
+      .catch(error => this.setState({ error, httpLock:false }));
   }
 
   // CLICK HANDLERS
