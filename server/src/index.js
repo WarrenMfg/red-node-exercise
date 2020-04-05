@@ -32,6 +32,8 @@ const express = require('express');
 const cors = require('cors'); // for tests
 const morgan = require('morgan');
 const path = require('path');
+const zlib = require('zlib');
+const fs = require('fs');
 const router = require('./router');
 
 const PORT = process.env.PORT || 50000;
@@ -43,6 +45,14 @@ app.use(morgan('dev'));
 
 // routes
 app.use('/api/data', router);
+
+app.use('/bundle.js', (req, res) => {
+  const gzip = zlib.createGzip();
+  const bundle = fs.createReadStream(path.resolve(__dirname, '../../client/public/bundle.js'));
+  res.set({ 'Content-Encoding': 'gzip', 'Cache-Control': 'max-age=86400' });
+  bundle.pipe(gzip).pipe(res);
+});
+
 app.use('/', express.static(path.resolve(__dirname, '../../client/public')));
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
