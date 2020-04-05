@@ -1,5 +1,5 @@
 const crud = require('../database/crud');
 const Record = require('../database/model');
 
-// create closure over crud.js
+// receive object of methods from crud.js
 module.exports = crud(Record);
