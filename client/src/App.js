@@ -34,7 +34,7 @@ class App extends React.Component {
       .then(handleErrors)
       .then(res => res.json())
       .then(wait(1000))
-      .then(records => this.setState({ records, sortBy, order, lastFetchTS: Date.now(), error: null }))
+      .then(records => this.setState({ records, lastFetchTS: Date.now(), error: null }))
       .catch(error => this.setState({ error }));
   }
 
@@ -65,7 +65,7 @@ class App extends React.Component {
     }
 
     // empty records array so that 'Loading...' text displays during setTimeout
-    this.setState({ records: [] });
+    this.setState({ records: [], sortBy: k, order: api.ORDERS[i] });
     // GET all records (assuming multiple clients can add/delete records)
     this.GET(k, api.ORDERS[i]);
   }
