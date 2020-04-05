@@ -43,9 +43,7 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
-// routes
-app.use('/api/data', router);
-
+// routes and middleware
 app.get('/bundle.js', (req, res) => {
   const gzip = zlib.createGzip();
   const bundle = fs.createReadStream(path.resolve(__dirname, '../../client/public/bundle.js'));
@@ -53,6 +51,7 @@ app.get('/bundle.js', (req, res) => {
   bundle.pipe(gzip).pipe(res);
 });
 
+app.use('/api/data', router);
 app.use('/', express.static(path.resolve(__dirname, '../../client/public')));
 
 app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
