@@ -33,7 +33,7 @@ class App extends React.Component {
     api.GET(sortBy, order)
       .then(handleErrors)
       .then(res => res.json())
-      .then(wait(1000))
+      // .then(wait(1000))
       .then(records => this.setState({ records, lastFetchTS: Date.now(), error: null }))
       .catch(error => this.setState({ error }));
   }
