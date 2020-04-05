@@ -1,3 +1,4 @@
+ // copy of data.js
  module.exports = [
   {
       rank: 3,

@@ -31,7 +31,8 @@ describe('App.js exists, it is an instance of a class, and its methods and state
       sortBy: api.DATA_PROPS[0],
       order: api.ORDERS[0],
       lastFetchTS: null,
-      error: null
+      error: null,
+      httpLock: false
     };
     const instance = new App();
 

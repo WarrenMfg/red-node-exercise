@@ -55,9 +55,10 @@ describe('server receives and responds to requests', () => {
       name: `${faker.name.firstName()} ${faker.name.lastName()}`,
       age: faker.random.number(100),
     };
+    // POST returns all records
     const afterPOST = await POST(validRecord);
 
-    // ensure it was POSTED
+    // ensure additional record is present
     expect(beforePOST.length + 1).toBe(afterPOST.length);
 
     // ensure keys/values are same
@@ -71,9 +72,8 @@ describe('server receives and responds to requests', () => {
       expect(newRecord[key]).toBe(val);
     });
 
-    // delete newRecord
+    // delete newRecord (not absolutely necessary for this test)
     const afterDELETE = await DELETE(newRecord);
-    
     expect(afterDELETE.length).toBe(beforePOST.length);
   });
 
@@ -117,7 +117,7 @@ describe('server receives and responds to requests', () => {
       name: undefined,
       age: faker.random.number(100) + 1000
     };
-    // cannot use POST() function because err needs to be returned
+    // cannot use POST() function above because err needs to be returned
     const POSTattempt = await axios.post('http://localhost:50000/api/data/one/rank/asc', invalidRecord)
       .then(res => res.data)
       .catch(err => err);
@@ -137,7 +137,7 @@ describe('server receives and responds to requests', () => {
       name: undefined,
       age: faker.random.number(100) + 1000
     };
-    // cannot use POST() function because err needs to be returned instead of logged
+    // cannot use POST() function above because err needs to be returned instead of logged
     await axios.post('http://localhost:50000/api/data/one/rank/asc', invalidRecord)
       .then(res => res.data)
       .catch(err => err);
@@ -154,7 +154,7 @@ describe('server receives and responds to requests', () => {
     
     const deletedRecord = beforeDELETE[0];
 
-    // DELETE records--returns updated array of all records
+    // DELETE returns updated array of all records
     const afterDELETE = await DELETE(deletedRecord);
 
     // compare to ensure deletedRecord was deleted
@@ -178,7 +178,7 @@ describe('server receives and responds to requests', () => {
     
     const deletedRecord = beforeDELETE[0];
 
-    // DELETE records--returns updated array of all records
+    // DELETE returns updated array of all records
     const afterDELETE = await DELETE(deletedRecord);
 
     // ensure consecutive ranks
@@ -191,10 +191,5 @@ describe('server receives and responds to requests', () => {
     });
   });
 
-
-  
-
-
-  
 });
 

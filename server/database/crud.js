@@ -59,12 +59,12 @@ const createOne = model => async (req, res) => {
   let count = await model.countDocuments({});
 
   // increment rank of all records with points less than new record.points 
-  await model.updateMany({ points: { $lte: req.body.points } }, { $inc: { rank: 1 } })
+  await model.updateMany({ points: { $lte: req.body.points } }, { $inc: { rank: 1 } }).lean().exec()
     // 500: internal server error
     .catch(() => res.sendStatus(500));
 
   // find the records that were just incremented (see above)
-  await model.find({ points: { $lte: req.body.points } })
+  await model.find({ points: { $lte: req.body.points } }).lean().exec()
     .then(docs => {
 
       // if any records were incremented
@@ -100,13 +100,13 @@ const createOne = model => async (req, res) => {
 
 const deleteOne = model => async (req, res) => {
   // delete record
-  await model.findOneAndDelete(req.body)
+  await model.findOneAndDelete(req.body).lean().exec()
     // 500: internal server error
     .catch(() => res.sendStatus(500));
 
   // determine if deleted record tied with another rank
   let tie = [];
-  await model.findOne({ rank: req.body.rank })
+  await model.findOne({ rank: req.body.rank }).lean().exec()
     .then(doc => {
       if (doc) {
         tie = doc;
@@ -117,7 +117,7 @@ const deleteOne = model => async (req, res) => {
 
   // if no tie, proceed with decrementing all ranks greater than rank of deleted record
   if (!tie.length) {
-    model.updateMany({ rank: { $gte: req.body.rank } }, { $inc: { rank: -1 } })
+    model.updateMany({ rank: { $gte: req.body.rank } }, { $inc: { rank: -1 } }).lean().exec()
       // respond with all records in case they were updated by another client
       .then(() => getMany(model)(req, res))
       // 500: internal server error
@@ -126,7 +126,6 @@ const deleteOne = model => async (req, res) => {
     // if there was a tie, just respond with all records in case they were updated by another client 
     getMany(model)(req, res);
   }
-
 };
 
 

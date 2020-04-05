@@ -4,7 +4,8 @@
   "description": "The goal of this exercise is to create a table of sortable data by building out all of the server side functionality and making the necessary connections between the server and the client. See the [README](server/README.md) for the complete list of server \"to dos\".",
   "main": "index.js",
   "scripts": {
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "postinstall": "(cd client && npm install); (cd server && npm install)"
   },
   "jest": {
     "setupFilesAfterEnv": [
