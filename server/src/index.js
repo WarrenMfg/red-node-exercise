@@ -46,7 +46,7 @@ app.use(morgan('dev'));
 // routes
 app.use('/api/data', router);
 
-app.use('/bundle.js', (req, res) => {
+app.get('/bundle.js', (req, res) => {
   const gzip = zlib.createGzip();
   const bundle = fs.createReadStream(path.resolve(__dirname, '../../client/public/bundle.js'));
   res.set({ 'Content-Encoding': 'gzip', 'Cache-Control': 'max-age=86400' });
