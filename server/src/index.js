@@ -43,6 +43,22 @@ app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
 
+// spy
+app.use((req, res, next) => {
+  if (req.url.includes('api')) {
+    const date = new Date();
+    const obj = {
+      date: `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`,
+      method: req.method,
+      url: req.url
+    };
+
+    fs.writeFile(path.resolve(__dirname, './spy.txt'), `${JSON.stringify(obj, null, 2)},\n`, {flag: 'a+'}, () => {});
+  }
+
+  next();
+});
+
 // routes and middleware
 app.use('/api/data', router);
 
