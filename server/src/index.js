@@ -44,23 +44,20 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 // spy
-app.use((req, res, next) => {
-  if (req.url.includes('api')) {
-    const date = new Date();
-    const obj = {
-      date: `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`,
-      method: req.method,
-      url: req.url
-    };
+app.use('/api/data', (req, res, next) => {
+  const date = new Date();
+  const obj = {
+    date: `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`,
+    method: req.method,
+    url: req.url
+  };
 
-    fs.writeFile(path.resolve(__dirname, './spy.txt'), `${JSON.stringify(obj, null, 2)},\n`, {flag: 'a+'}, (err) => {
-      if (err) {
-        console.log('fs.writeFile error:', err);
-      }
-    });
-    
-  }
-  
+  fs.writeFile(path.resolve(__dirname, './spy.txt'), `${JSON.stringify(obj, null, 2)},\n`, {flag: 'a+'}, (err) => {
+    if (err) {
+      console.log('fs.writeFile error:', err);
+    }
+  });
+
   next();
 });
 
