@@ -45,6 +45,8 @@ app.use(morgan('dev'));
 
 // spy
 app.use('/api/data', (req, res, next) => {
+  next();
+  
   const date = new Date();
   const obj = {
     date: `${date.toLocaleDateString()} ${date.toLocaleTimeString()}`,
@@ -52,7 +54,6 @@ app.use('/api/data', (req, res, next) => {
     url: req.url
   };
 
-  next();
   fs.writeFile(path.resolve(__dirname, './spy.txt'), `${JSON.stringify(obj, null, 2)},\n`, {flag: 'a+'}, (err) => {
     if (err) {
       console.log('fs.writeFile error:', err);
