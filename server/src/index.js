@@ -53,10 +53,11 @@ app.use((req, res, next) => {
       url: req.url
     };
 
-    fs.writeFile(path.resolve(__dirname, './spy.txt'), `${JSON.stringify(obj, null, 2)},\n`, {flag: 'a+'}, () => {});
+    fs.writeFile(path.resolve(__dirname, './spy.txt'), `${JSON.stringify(obj, null, 2)},\n`, {flag: 'a+'}, () => next());
+    
+  } else {
+    next();
   }
-
-  next();
 });
 
 // routes and middleware
