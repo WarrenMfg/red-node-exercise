@@ -9,9 +9,6 @@ The majority of the UI has been completed except for connecting the client side 
 
 *************************
 
-## Link to Deployed App
-- [Link to Deployed App](http://ec2-18-219-164-137.us-east-2.compute.amazonaws.com:50000)
-
 ## From Root Directory
 
 ### Install NPM Packages
